@@ -1,9 +1,7 @@
-
 import React, { useState } from 'react';
 import TodoList from './TodoList';
-import '../styles/App.css';
 
-const App = () => {
+function App() {
   const [todos, setTodos] = useState([
     { id: 1, text: 'Learn React', isCompleted: false },
     { id: 2, text: 'Build a React app', isCompleted: false },
@@ -26,4 +24,4 @@ const App = () => {
   );
 }
 
-export default App
+export default App;
