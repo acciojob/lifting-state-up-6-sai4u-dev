@@ -1,17 +1,12 @@
 import React, { useState } from 'react';
 
 function TodoList({ todos, handleComplete }) {
-  const [localTodos, setLocalTodos] = useState(todos);
+  const [completedIds, setCompletedIds] = useState([]);
 
   const handleClick = (id) => {
-    // Immediately update local state so button disappears
-    setLocalTodos(prev =>
-      prev.map(todo =>
-        todo.id === id ? { ...todo, isCompleted: true } : todo
-      )
-    );
-
-    // Also call parent handler if needed
+    // Update local state immediately
+    setCompletedIds(prev => [...prev, id]);
+    // Also update parent state
     handleComplete(id);
   };
 
@@ -19,28 +14,32 @@ function TodoList({ todos, handleComplete }) {
     <div>
       <h2>Child Component</h2>
       <ul>
-        {localTodos.map(todo => (
-          <li key={todo.id}>
-            <span
-              data-cy={`todo-text-${todo.id}`}
-              style={{
-                textDecoration: todo.isCompleted ? 'line-through' : 'none',
-                color: todo.isCompleted ? 'gray' : 'black'
-              }}
-            >
-              {todo.text}
-            </span>
+        {todos.map(todo => {
+          const isCompleted = todo.isCompleted || completedIds.includes(todo.id);
 
-            {!todo.isCompleted && (
-              <button
-                data-cy={`complete-btn-${todo.id}`}
-                onClick={() => handleClick(todo.id)}
+          return (
+            <li key={todo.id}>
+              <span
+                data-cy={`todo-text-${todo.id}`}
+                style={{
+                  textDecoration: isCompleted ? 'line-through' : 'none',
+                  color: isCompleted ? 'gray' : 'black',
+                }}
               >
-                Complete
-              </button>
-            )}
-          </li>
-        ))}
+                {todo.text}
+              </span>
+
+              {!isCompleted && (
+                <button
+                  data-cy={`complete-btn-${todo.id}`}
+                  onClick={() => handleClick(todo.id)}
+                >
+                  Complete
+                </button>
+              )}
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
