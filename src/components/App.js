@@ -15,9 +15,11 @@ function App() {
       )
     );
   };
+  console.log(todos);
+  
 
   return (
-    <div style={{ padding: '20px' }}>
+    <div>
       <h1>Parent Component</h1>
       <TodoList todos={todos} handleComplete={handleComplete} />
     </div>
