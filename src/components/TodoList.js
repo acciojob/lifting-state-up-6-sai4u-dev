@@ -16,6 +16,7 @@ function TodoList({ todos, handleComplete }) {
 
                         {!todo.isCompleted && (
                             <button
+                                data-cy={`complete-btn-${todo.id}`}
                                 onClick={() => handleComplete(todo.id)}
                                 style={{ marginLeft: '10px' }}
                             >
