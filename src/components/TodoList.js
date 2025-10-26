@@ -1,45 +1,33 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 function TodoList({ todos, handleComplete }) {
-  const [completedIds, setCompletedIds] = useState([]);
-
-  const handleClick = (id) => {
-    // Update local state immediately
-    setCompletedIds(prev => [...prev, id]);
-    // Also update parent state
-    handleComplete(id);
-  };
-
   return (
     <div>
       <h2>Child Component</h2>
       <ul>
-        {todos.map(todo => {
-          const isCompleted = todo.isCompleted || completedIds.includes(todo.id);
+        {todos.map(todo => (
+          <li key={todo.id}>
+            <span
+              data-cy={`todo-text-${todo.id}`}
+              style={{
+                textDecoration: todo.isCompleted ? 'line-through' : 'none',
+                color: todo.isCompleted ? 'gray' : 'black',
+              }}
+            >
+              {todo.text}
+            </span>
 
-          return (
-            <li key={todo.id}>
-              <span
-                data-cy={`todo-text-${todo.id}`}
-                style={{
-                  textDecoration: isCompleted ? 'line-through' : 'none',
-                  color: isCompleted ? 'gray' : 'black',
-                }}
+            {/* Button disappears immediately if todo.isCompleted is true */}
+            {!todo.isCompleted && (
+              <button
+                data-cy={`complete-btn-${todo.id}`}
+                onClick={() => handleComplete(todo.id)}
               >
-                {todo.text}
-              </span>
-
-              {!isCompleted && (
-                <button
-                  data-cy={`complete-btn-${todo.id}`}
-                  onClick={() => handleClick(todo.id)}
-                >
-                  Complete
-                </button>
-              )}
-            </li>
-          );
-        })}
+                Complete
+              </button>
+            )}
+          </li>
+        ))}
       </ul>
     </div>
   );
